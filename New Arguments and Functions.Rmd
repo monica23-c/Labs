@@ -1,0 +1,308 @@
+---
+title: "New Arguments and Functions"
+author: "Advanced PD Lab 1A"
+date: The following slides contain **new** commands that are not included in the RStudio
+  codes and functions handout.
+output:
+  slidy_presentation: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+```
+	
+
+```{r, eval=TRUE, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
+library(mobilizr)
+```
+
+## CONSIDERING DATA
+
+The first two labs in the IDS curriculum contain commands that are important when considering or examining data.  
+
+`names()`  
+`ncol()`  
+`nrow()`  
+`dim()`  
+`str()`  
+
+**Type the following command on your console:**
+
+```{r, eval=FALSE, echo=TRUE}
+inspect(cdc)
+```
+
+**<span style="color:red"> 1.  What information does this function display and how does it display it?</span>**
+
+## ENHANCING VISUALIZATIONS
+
+The following <b>arguments</b> can be used to enhance a visualization.
+
+* Option:  `main = " "` .  Adds a title to your visual  
+
+* Option:  `col= " "` . Changes the color of your visual <a href="http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf"  target="_blank">See Colors</a>
+
+* Option:  `xlab = " "` .  Changes the label on the x-axis  
+
+* Option:  `ylab = " "` . Changes the label on the y-axis  
+
+* Option:  `horizontal = TRUE` . Makes bars horizontal 
+
+
+
+<b>Examples:</b> 
+
+```{r, eval = TRUE, echo = TRUE}
+histogram(~weight, data=cdc, 
+         col="steelblue", 
+         xlab="weight in kilograms")
+```
+
+
+
+```{r, eval = TRUE, echo = TRUE}
+bargraph(~gender, data=cdc,
+         groups=gender, 
+         col=c("red2","navy"),
+         main="Distribution of Gender")
+```
+
+<b>FLEX YOUR SKILLS</b>
+
+**2.  What code will create the visual below?**    
+
+Try out different codes in RStudio until you are able to match the visual below.
+
+```{r, echo=FALSE}
+bargraph(~days_vaping,data=cdc,
+         col="green",
+         main="Distribution of Vaping Habits",
+         horizontal=TRUE,
+         type="percent")
+```
+
+## HISTOGRAMS
+
+When creating a histogram, it can be frustrating trying to estimate the values on the x-axis. A solution is the argument `breaks` in conjunction with the function `seq( )`.  
+
+<b>Example:</b>  
+
+The option  `breaks = seq( )`  allows one to control the bin widths as well as the beginning and ending values of the bins.
+The minimum and maximum values need to be considered beforehand so that no data is excluded.
+
+```{r, eval = TRUE, echo = TRUE}
+range(~weight, data=cdc)
+```
+
+The histogram below has bin widths of 10. The first bin begins at a weight of 20 kgs and the last bin ends at 190 kgs. 
+
+```{r, eval = TRUE, echo = TRUE}
+histogram (~weight, data=cdc, breaks=seq(20, 190, by=10))
+```
+
+**3. Try different values in the sequence function. What did you notice?**  
+
+Using the concept of balancing point, guess the mean weight of the teens in the cdc data.  
+
+In order to estimate the mean absolute deviation (MAD) of the distribution of weight, it would be helpful to draw a vertical line on the histogram to represent the mean weight.  
+
+<b>Example:</b> 
+
+```{r, eval = FALSE, echo = TRUE}
+histogram (~weight, data=cdc, breaks=seq(30, 190, by=10))
+```
+
+```{r, eval = TRUE, echo = TRUE}
+add_line (vline = mean(~weight, data = cdc))
+``` 
+
+**4. Where would the median of this distribution lie in comparison to the mean? Write the code to create a vertical line representing the median.**
+
+
+Distributions that are skewed or that contain outliers, can also impact the readability of a plot.  
+The `xlim` argument along with the `c()` function allow you to choose the lower and upper limits of the x-axis for numerical distribution.
+
+```{r, eval = FALSE, echo = TRUE}
+histogram (~weight, data=cdc)
+```
+
+
+```{r, eval = FALSE, echo = TRUE}
+histogram (~weight, data=cdc, xlim=c(30,160))
+```
+
+
+
+There is also a `ylim` argument.
+
+**5. For which type of plot might it be appropriate to use the 'ylim' argument? Explain.**  
+
+
+## DOTPLOTS  
+
+Dotplots are more appropriate when working with small data sets. When creating a dotplot, the visualization can be inaccurate because the function tends to group values together, similar to a histogram. A solution is the `nint` argument. The `nint` argument allows you to create a bin for each value in the distribution.  
+
+The CDC is by no means a small dataset so we will create a smaller subset containing less than one hundred observations.
+
+```{r, eval=TRUE, echo=TRUE}
+height_short<-filter(cdc, height<=1.45)
+```
+
+```{r, eval=TRUE, echo=TRUE}
+tally(~height,data=height_short)
+```
+
+The output for the tally function displays eight different values for the heights of the 93 observations that were filtered yet the dotplot below only shows seven bins. If you look closely the dots do not correspond to the actual heights either.
+
+
+```{r, eval=TRUE, echo=TRUE}
+dotPlot(~height,data=height_short)
+```
+
+To remedy this problem, we need to create a bin for each value between 1.27 and 1.45. To do this, find the range between the minumum and maximum values and add one. This is the value you need to set `nint` equal to get a better representation.
+
+```{r, eval = TRUE, echo = TRUE}
+dotPlot(~height, data=height_short, nint=19) 
+```
+
+<b>FLEX YOUR SKILLS</b>
+
+**6.  What codes will create the visual below?** 
+
+```{r, eval=TRUE, echo=FALSE}
+height_tall<-filter(cdc, height>=1.98)
+tally(~height,data=height_tall)
+```
+
+```{r, eval=TRUE, echo=FALSE}
+dotPlot(~height,data=height_tall,nint=14)
+```
+
+
+## NEW OPERATORS
+
+An operator is a symbol that tells the compiler (computer software) to perform specific mathematical or logical manipulations. In R programming we have the following types of operators: Arithmetic, Relational, Logical, Assignment and Miscellaneous.
+
+
+* <b>Arithmetic Operators</b>  
+
+You are probably familiar with the following arithmetic operators:
+`+`, `-`, `*`, `/` ,`^`, `sqrt()`, `log()`, `factorial()` .  
+
+An arithmetic operator that you are probably not familiar with is the `%%` operator.  
+
+**7.  Type 23%%5 in your console. Try other values until it is clear what the operator does. What does the operator do?** 
+
+* <b>Relational Operators</b>  
+
+You've used many of the relational operators when filtering:
+`<`, `>`, `<=`, `>=` ,`==`. 
+
+Another relational operator is the <b>not-equal-to</b> operator (`!=`).
+
+<b>Example:</b>  
+
+To create the <b>minors</b> data frame we told R to filter the observations whose age was NOT EQUAL to 18 + years. 
+
+```{r, eval = TRUE, echo = TRUE}
+minors<-filter(cdc, age!="18 years old or older")
+tally(~age,data=minors)
+```
+
+**8.  Write two different codes that create a data frame that include only females.**  
+
+* <b>Logical Operators</b>  
+
+When filtering you also used the logical operator AND (`&`) (equivalent to a comma) when filtering observations with multiple characteristics.  
+
+Sometimes, however, you want to filter observations that have one characteristic OR (|) another.
+
+<b>Example:</b> 
+
+The <b>age_16_17</b> data frame includes observations that reported an age of 16 years old OR 17 years old.    
+
+```{r, eval = TRUE, echo = TRUE}
+age_16_17<-filter(cdc, age=="16 years old"|age=="17 years old")
+tally(~age,data=age_16_17)
+```
+
+**9.  Write a code that creates a data frame that includes the observations that always wore a helmet OR never wore a helmet while riding their bicycle.** 
+
+
+<b>CLEANING</b>  
+
+Notice that even though we've filtered out the 16 and 17 year olds, the other age categories still appear in our tally (above) and bargraph.
+
+```{r, eval = TRUE, echo = TRUE}
+bargraph(~age,data=age_16_17)
+```
+
+
+
+When we filter out categories from a variable that R interprets as a factor, R keeps ALL the categories and just reports that the data has 0 observations within those categories.  
+In order to exclude the other categories, we need to “trick” R by changing age from a factor variable to a character variable. 
+
+```{r, eval = TRUE, echo = TRUE}
+age_16_17<-mutate(age_16_17, age=as.character(age))
+```
+
+```{r, eval = TRUE, echo = TRUE}
+tally(~age,data=age_16_17)
+bargraph(~age,data=age_16_17)
+```
+
+
+## MISSING VALUES
+
+Some of the teens in the CDC data did not answer some of the survey questions or their answers were ommitted because of discrepancies especially in height and weight. Although we can still conduct an analysis we sometimes obtain warning messages that data is missing or when analyzing a categorical variable we obtain a new category that includes NA (not available).
+
+You might find the functions `na.omit()` and `is.na()` useful.  
+
+The function `na.omit()` will exclude ALL observations that have NA as a value for any of the variables.  
+
+<b>Example:</b>  
+
+```{r, eval = TRUE, echo = TRUE}
+cdc2<-na.omit(cdc)
+dim(cdc2)
+```
+
+Notice that this function excluded 7301 observations!  
+This is not good practice so an alternative is to use the `is.na()` function with the <b>not-equal-to</b> logical operator (`!=`).
+
+<b>Example:</b>  
+
+```{r, eval = TRUE, echo = TRUE}
+tally(~describe_weight, data=cdc)
+```
+
+The <b>cdc3</b> data frame excludes the observations that did not provide an answer for their weight description.
+
+```{r, eval = TRUE, echo = TRUE}
+cdc3<-filter(cdc, !is.na(describe_weight))
+tally(~describe_weight, data=cdc3)
+```
+
+<b>FLEX YOUR SKILLS</b>  
+
+**10.  Write a code that creates the plot below.**  
+
+Hint: The argument `stack=TRUE` was utilized.
+
+```{r, eval=TRUE, echo=FALSE}
+file1<-filter(cdc, !is.na(depressed),!is.na(describe_weight))
+file1<-mutate(file1, depressed=as.character(depressed), 
+              describe_weight=as.character(describe_weight))
+bargraph(~describe_weight, data=file1, groups=depressed, stack=TRUE, 
+         main="Distribution of Depression by Weight Perception")
+```
+
+<b>BARPLOTS</b>
+
+To display conditional relative frequencies barplots need to be utilized.
+
+The conditional relative frequencies need to be stored as as vector and then used in the `barplot()` function.
+
+```{r, eval=TRUE, echo=TRUE}
+table1<-tally(~depressed|describe_weight, format="percent",data=file1)
+barplot(table1,legend=TRUE,col=c("steelblue","purple"))
