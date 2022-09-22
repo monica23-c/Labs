@@ -52,7 +52,7 @@ The following <b>arguments</b> can be used to enhance a visualization.
 
 <b>Examples:</b> 
 
-```{r, eval = TRUE, echo = TRUE}
+```{r, eval = TRUE, echo = TRUE, fig.height=4, fig.width=5}
 histogram(~weight, data=cdc, 
          col="steelblue", 
          xlab="weight in kilograms")
@@ -60,7 +60,7 @@ histogram(~weight, data=cdc,
 
 
 
-```{r, eval = TRUE, echo = TRUE}
+```{r, eval = TRUE, echo = TRUE, fig.height=4, fig.width=5}
 bargraph(~gender, data=cdc,
          groups=gender, 
          col=c("red2","navy"),
@@ -73,7 +73,7 @@ bargraph(~gender, data=cdc,
 
 Try out different codes in RStudio until you are able to match the visual below.
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.height=4, fig.width=5}
 bargraph(~days_vaping,data=cdc,
          col="green",
          main="Distribution of Vaping Habits",
@@ -96,7 +96,7 @@ range(~weight, data=cdc)
 
 The histogram below has bin widths of 10. The first bin begins at a weight of 20 kgs and the last bin ends at 190 kgs. 
 
-```{r, eval = TRUE, echo = TRUE}
+```{r, eval = TRUE, echo = TRUE, fig.height=4, fig.width=5}
 histogram (~weight, data=cdc, breaks=seq(20, 190, by=10))
 ```
 
@@ -108,11 +108,11 @@ In order to estimate the mean absolute deviation (MAD) of the distribution of we
 
 <b>Example:</b> 
 
-```{r, eval = FALSE, echo = TRUE}
+```{r, eval = FALSE, echo = TRUE, fig.height=4, fig.width=5}
 histogram (~weight, data=cdc, breaks=seq(20, 190, by=10))
 ```
 
-```{r, eval = TRUE, echo = TRUE}
+```{r, eval = TRUE, echo = TRUE, fig.height=4, fig.width=5}
 add_line (vline = mean(~weight, data = cdc),col="black")
 ``` 
 
@@ -122,12 +122,12 @@ add_line (vline = mean(~weight, data = cdc),col="black")
 Distributions that are skewed or that contain outliers, can also impact the readability of a plot.  
 The `xlim` argument along with the `c()` function allow you to choose the lower and upper limits of the x-axis for numerical distribution.
 
-```{r, eval = TRUE, echo = TRUE}
+```{r, eval = TRUE, echo = TRUE, fig.height=4, fig.width=5}
 histogram (~weight, data=cdc)
 ```
 
 
-```{r, eval = TRUE, echo = TRUE}
+```{r, eval = TRUE, echo = TRUE, fig.height=4, fig.width=5}
 histogram (~weight, data=cdc, xlim=c(30,160))
 ```
 
@@ -155,13 +155,13 @@ tally(~height,data=height_short)
 The output for the tally function displays eight different values for the heights of the 97 observations that were filtered yet the dotplot below only shows five bins. If you look closely the dots do not correspond to the actual heights either.
 
 
-```{r, eval=TRUE, echo=TRUE}
+```{r, eval=TRUE, echo=TRUE, fig.height=4, fig.width=5}
 dotPlot(~height,data=height_short)
 ```
 
 To remedy this problem, we need to create a bin for each value between 1.3 and 1.47. Since height is reported to the nearest hundredth of a meter, we need 18 bins (47 - 30 + 1 = 18).
 
-```{r, eval = TRUE, echo = TRUE}
+```{r, eval = TRUE, echo = TRUE, fig.height=4, fig.width=5}
 dotPlot(~height, data=height_short, nint=18) 
 ```
 
@@ -174,7 +174,7 @@ height_tall<-filter(cdc, height>=1.96)
 tally(~height,data=height_tall)
 ```
 
-```{r, eval=TRUE, echo=FALSE}
+```{r, eval=TRUE, echo=FALSE, fig.height=4, fig.width=5}
 dotPlot(~height,data=height_tall,nint=8)
 ```
 
@@ -226,14 +226,17 @@ age_16_17<-filter(cdc, age=="16 years old"|age=="17 years old")
 tally(~age,data=age_16_17)
 ```
 
-**<span style="color:red">9.  Write a code that creates a data frame that includes the observations that always wore a helmet OR never wore a helmet while riding their bicycle.</span>** 
+**<span style="color:red">9.  Write a code that creates a data frame that includes the observations that always wore a seatbelt OR never wore a seatbelt while riding in a car.</span>** 
+```{r, eval=FALSE, echo=FALSE}
+seatbelt_A_N<-filter(cdc, seat_belt=="Always"|seat_belt=="Never")
+```
 
 
 <b>CLEANING</b>  
 
 Notice that even though we've filtered out the 16 and 17 year olds, the other age categories still appear in our tally (above) and bargraph.
 
-```{r, eval = TRUE, echo = TRUE}
+```{r, eval = TRUE, echo = TRUE, fig.height=4, fig.width=5}
 bargraph(~age,data=age_16_17)
 ```
 
@@ -246,7 +249,7 @@ In order to exclude the other categories, we need to “trick” R by changing a
 age_16_17<-mutate(age_16_17, age=as.character(age))
 ```
 
-```{r, eval = TRUE, echo = TRUE}
+```{r, eval = TRUE, echo = TRUE, fig.height=4, fig.width=5}
 tally(~age,data=age_16_17)
 bargraph(~age,data=age_16_17)
 ```
@@ -290,7 +293,7 @@ tally(~describe_weight, data=cdc3)
 
 Hint: The argument `stack=TRUE` was utilized.
 
-```{r, eval=TRUE, echo=FALSE}
+```{r, eval=TRUE, echo=FALSE, fig.height=4, fig.width=5}
 file1<-filter(cdc, !is.na(depressed),!is.na(describe_weight))
 file1<-mutate(file1, depressed=as.character(depressed), 
               describe_weight=as.character(describe_weight))
