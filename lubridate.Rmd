@@ -1,0 +1,117 @@
+---
+title: "Do you have a Date?"
+author: "Learn how to work with dates using the lubridate package"
+date: The following slides contain **new** commands that are not included in the RStudio
+  codes and functions handout.
+output:
+  slidy_presentation: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+```
+
+```{r, eval=TRUE, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
+library(mobilizr)
+library(lubridate)
+```
+
+## Installing packages
+
+-   Click on the `Packages` tab and check if the lubridate package is installed.
+    -   If it is not installed click on `Install`:
+
+        -   type lubridate in the Packages box
+
+        -   click Install
+
+    -   Check off the box next to lubridate to load the package.
+-   You are now ready to use lubridate!
+
+## Lubridate basics
+
+-   Run the code below using today's date in the form `month` `day` `year` as the argument
+
+    ```{r, eval=FALSE}
+    class("____________")
+
+    ```
+
+-   Run the code below using today's date as the argument again
+
+    ```{r, eval=FALSE}
+    class(mdy("_____________"))
+    ```
+
+<!-- -->
+
+-   What was the output? What is the function mdy() doing?
+
+-   What information will the function `wday()` extract from the date? Check and see if you were correct.
+
+    ```{r, eval=FALSE}
+    wday(mdy("_____________"))
+    ```
+
+-   Include the argument `label = TRUE` in the `wday()` function
+
+The `mdy()` and `wday()` functions are functions in the `lubridate` package that help us extract information from dates. Let's get some more practice.
+
+## The babies data
+
+-   Use the `data()` command to import the *Births78* data.
+
+-   The `wday`, `year`, `month`, `day_of_year`, `day_of_month` and `day_of_week` variables were all extract from the `date` column.
+
+-   You are going to do an exercise where you recreate the *Births78* data set given only the `date` and `births` variables.
+
+-   Run the code below to make a copy of the *Births78* data and simultaneously delete columns three through eight.
+
+    ```{r, eval=FALSE}
+    births_78<-select(Births78, -c(3:8))
+
+    ```
+
+-   Use the `wday()`function along with the `mutate()` function to create the `day_of_week` variable. Check your work against the original `Births78` dataset.
+
+    ```{r, eval=FALSE, echo=TRUE}
+    births_78<- _________(births_78, ___________ = _________(date))
+
+    ```
+
+    ```{r, eval=FALSE, echo=FALSE}
+    births_78<-mutate(births_78, day_of_week=wday(date))
+
+    ```
+
+-   Run the code below inserting the variable name from the original *Births78* data that will be generated.
+
+    ```{r, eval=FALSE}
+    births_78<-mutate(births_78, _________ = wday(date, label= TRUE ))
+    ```
+
+## Lubridate commands
+
+-   Go to the *Files* tab and open the *lubridate cheat sheet*
+
+-   Refer to the functions in the GET AND SET COMPONENTS to determine which commands will extract the `year`, `month`, `day_of_year`, and `day_of_month` from the date variable.
+
+    ```{r, eval= FALSE, echo = FALSE}
+    births_78<-mutate(births_78, year = year(date))
+    ```
+
+    ```{r, eval= FALSE, echo = FALSE}
+    births_78<-mutate(births_78, month = month(date))
+    ```
+
+    ```{r, eval= FALSE, echo = FALSE}
+    births_78<-mutate(births_78, day_of_year = yday(date))
+    ```
+
+    ```{r, eval= FALSE, echo = FALSE}
+    births_78<-mutate(births_78, day_of_month = day(date))
+    ```
+
+## On your own
+
+-   Use either the `flights` dataset or the `crime` dataset and extract a useful variable from the date variable to perform analysis on.
